@@ -68,3 +68,10 @@ https://gopher.floodgap.com/gopher/.
 
 It was made for gogo, which was inspired by lartu's
 [OpenNapkin](https://github.com/Lartu/OpenNapkin) client.
+
+## todo 
+
+- [ ] return 500s vs 404s accurately
+- [ ] user supplied css
+- [ ] systemd example
+- [ ] man page 
