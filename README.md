@@ -64,3 +64,6 @@ and inspired by
 
 The proxy idea comes from older gopher/web proxy sites like
 https://gopher.floodgap.com/gopher/.
+
+It was made for gogo, which was inspired by lartu's
+[OpenNapkin](https://github.com/Lartu/OpenNapkin) client.
