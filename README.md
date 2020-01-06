@@ -12,6 +12,20 @@
 requests through HTTP. It's meant to be run locally and was written
 for [gogo](https://github.com/dvkt/gogo), a WebKit Gopher client.
 
+Run it in a terminal then visit the local URL in your favorite web
+browser to burrow through the Gophersphere with ease.
+
+## screenies
+
+|![Screenshot](./img/cabin.png)|![Screenshot](./img/gopherproject.png)|
+|:-:|:-:|
+| The Lonely Cabin | gopherproject.org |
+
+|![Screenshot](./img/correct.png)|![Screenshot](./img/sdf.png)|
+|:-:|:-:|
+| gopherproject.org | sdf.org |
+
+
 ## usage
 
     Usage:
@@ -37,12 +51,9 @@ at https://github.com/dvkt/phroxy/releases
 
     cargo run -- -p 8080
 
-## screenies
+## credits
 
-|![Screenshot](./img/cabin.png)|![Screenshot](./img/gopherproject.png)|
-|:-:|:-:|
-| The Lonely Cabin | gopherproject.org |
-
-|![Screenshot](./img/correct.png)|![Screenshot](./img/sdf.png)|
-|:-:|:-:|
-| gopherproject.org | sdf.org |
+phroxy's design is heavily inspired by 
+[phetch](https://github.com/dvkt/phetch)
+and 
+[Gaufre](https://gitlab.com/commonshost/gaufre).
