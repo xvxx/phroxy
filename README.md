@@ -39,10 +39,10 @@ at https://github.com/dvkt/phroxy/releases
 
 ## screenies
 
-|![Screenshot](./img/cabin.png)|![Screenshot](./img/correct.png)|
+|![Screenshot](./img/cabin.png)|![Screenshot](./img/gopherproject.png)|
 |:-:|:-:|
 | The Lonely Cabin | gopherproject.org |
 
-|![Screenshot](./img/gopherproject.png)|![Screenshot](./img/sdf.png)|
+|![Screenshot](./img/correct.png)|![Screenshot](./img/sdf.png)|
 |:-:|:-:|
 | gopherproject.org | sdf.org |
