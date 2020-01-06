@@ -11,8 +11,8 @@ use std::{
 };
 use threadpool::ThreadPool;
 
-/// This is only for running locally, so only allow a low number of
-/// simultaneous connections.
+/// Max number of simultaneous connections.
+/// This is kept low because phroxy is meant to be run locally.
 const MAX_WORKERS: usize = 10;
 
 /// Starts a web server locally.
