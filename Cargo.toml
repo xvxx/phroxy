@@ -3,8 +3,26 @@ name = "phroxy"
 version = "0.1.0"
 authors = ["dvkt <c@dvkt.io>"]
 edition = "2018"
+description = "phroxy proxies gopher through HTTP"
+readme = "README.md"
+repository = "https://github.com/dvkt/phroxy"
+keywords = ["gopher", "proxy"]
+exclude = [
+    "img/*"
+]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.release]
+lto = true
+codegen-units = 1
+panic = 'abort'
+opt-level = 'z'  # Optimize for size.
+
+[package.metadata.release]
+pre-release-replacements = [
+  {file="README.md", search="phroxy-v\\d\\.\\d\\.\\d-", replace="{{crate_name}}-v{{version}}-"},
+  {file="README.md", search="/v\\d\\.\\d\\.\\d/", replace="/v{{version}}/"},
+]
+dev-version-ext = "dev"
 
 [dependencies]
 threadpool = "1.7.1"
