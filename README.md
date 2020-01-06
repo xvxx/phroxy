@@ -17,13 +17,13 @@ browser to burrow through the Gophersphere with ease.
 
 ## screenies
 
-|![Screenshot](./img/cabin.png)|![Screenshot](./img/gopherproject.png)|
+|![Screenshot](./img/cabin.png)|![Screenshot](./img/sdf.png)|
 |:-:|:-:|
-| The Lonely Cabin | gopherproject.org |
+| The Lonely Cabin | sdf.org |
 
-|![Screenshot](./img/correct.png)|![Screenshot](./img/sdf.png)|
+|![Screenshot](./img/correct.png)|![Screenshot](./img/gopherproject.png)|
 |:-:|:-:|
-| gopherproject.org | sdf.org |
+| gopherproject.org | gopherproject.org |
 
 
 ## usage
