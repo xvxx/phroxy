@@ -53,7 +53,10 @@ at https://github.com/dvkt/phroxy/releases
 
 ## credits
 
-phroxy's design is heavily inspired by 
+phroxy's design is based on 
 [phetch](https://github.com/dvkt/phetch)
-and 
+and inspired by
 [Gaufre](https://gitlab.com/commonshost/gaufre).
+
+The proxy idea comes from older gopher/web proxy sites like
+https://gopher.floodgap.com/gopher/.
