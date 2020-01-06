@@ -37,3 +37,12 @@ at https://github.com/dvkt/phroxy/releases
 
     cargo run -- -p 8080
 
+## screenies
+
+|![Screenshot](./img/cabin.png)|![Screenshot](./img/correct.png)|
+|:-:|:-:|
+| The Lonely Cabin | gopherproject.org |
+
+|![Screenshot](./img/gopherproject.png)|![Screenshot](./img/sdf.png)|
+|:-:|:-:|
+| gopherproject.org | sdf.org |
