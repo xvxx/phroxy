@@ -5,7 +5,11 @@
 |__/ |  / |    |__/  /\   \_/ 
 |                   /  \   /  
                    /    \
---> 
+--> <p align="center"> <img src="./img/logo.png"> <br> 
+<a href="https://github.com/dvkt/phroxy/releases">
+<img src="https://img.shields.io/github/v/release/dvkt/phroxy?include_prereleases">
+</a>
+</p>
 
 
 `phroxy` is a small, multi-threaded web server that proxies Gopher
