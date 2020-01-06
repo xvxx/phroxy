@@ -3,6 +3,7 @@ name = "phroxy"
 version = "0.1.0"
 authors = ["dvkt <c@dvkt.io>"]
 edition = "2018"
+license = "MIT"
 description = "phroxy proxies gopher through HTTP"
 readme = "README.md"
 repository = "https://github.com/dvkt/phroxy"
