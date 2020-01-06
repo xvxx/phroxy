@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>{{title}}</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <nav>
+      [ <a href="javascript:history.back();">back</a>
+      |
+      <form id="goto" method="get">
+        <input id="goto-url" type="text" value="{{url}}" onClick="this.select()" />
+      </form>
+      |
+      <a href="javascript:history.forward();">next</a>
+      ]
+    </nav>
+    <pre class="content">{{content}}</pre>
+  </div>
+</body>
+
+<script>
+  // big search bar at the top of the page
+  document.getElementById("goto").addEventListener("submit", function (e) {
+    window.location = "/" + document.getElementById("goto-url").value;
+    e.preventDefault();
+    return false;
+  });
+
+  // inline search entries
+  Array.prototype.filter.call(document.getElementsByClassName("search"), function (el) {
+    el.addEventListener("submit", function (e) {
+      const input = this.getElementsByTagName("input")[0];
+      window.location = "/" + this.action + "?" + input.value;
+      e.preventDefault();
+      return false;
+    });
+  });
+</script>
+
+</html>

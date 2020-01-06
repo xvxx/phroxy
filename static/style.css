@@ -1,0 +1,69 @@
+body {
+    font-size: 150%;
+    background-color: black;
+    color: yellow;
+    font-family: monospace;
+}
+
+a, a:visited {
+    text-decoration: none;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.content {
+    margin: 0 auto;
+    display: inline-block;
+    text-align: left;
+}
+
+.content .Menu a, nav a {
+    color: #198fff;
+}
+
+.content .Text a {
+    color: white;
+}
+
+.content .HTML a {
+    color: #19cb00;
+}
+
+.content .text {
+    color: white;
+}
+
+nav {
+    margin-bottom: 15px;
+}
+
+form {
+    display: inline;
+}
+
+nav input[type=text] {
+    text-align: center;
+    border: none;
+    background: black;
+    color: yellow;
+    font-family: monospace;
+    font-size: 125%;
+    padding: 5px;
+}
+
+.content .Search input[type=text] {
+    text-align: left;
+    border: none;
+    background: black;
+    color: white;
+    font-family: monospace;
+    font-size: 100%;
+    padding: 5px;
+    width: 100%;
+}
+
+.content .Search input[type=text]::placeholder {
+    color: white;
+}
