@@ -4,8 +4,8 @@ use phetch::{
     gopher,
     menu::{Line, Menu},
 };
+use rust_embed::RustEmbed;
 use std::{
-    fs,
     io::{self, prelude::*, BufReader, Read, Write},
     net::{TcpListener, TcpStream},
 };
@@ -60,11 +60,11 @@ fn write_file<'a, W>(mut w: &'a W, req: Request) -> Result<()>
 where
     &'a W: Write,
 {
-    let path = req.disk_path();
-    let mut f = fs::File::open(&path)?;
-    println!("└ 200 OK: {}", path);
+    println!("└ 200 OK: {}", req.path);
     w.write(b"HTTP/1.1 200 OK\r\n\r\n")?;
-    io::copy(&mut f, &mut w)?;
+    if let Some(bytes) = req.static_file_bytes() {
+        w.write(bytes.as_ref())?;
+    }
     Ok(())
 }
 
@@ -73,7 +73,7 @@ fn write_response<'a, W>(mut w: &'a W, req: Request) -> Result<()>
 where
     &'a W: Write,
 {
-    let layout = std::fs::read_to_string("./static/layout.html")?;
+    let layout = asset("layout.html")?;
     let response = match gopher::fetch_url(&req.path) {
         Ok(content) => {
             let rendered = layout
@@ -144,4 +144,17 @@ fn to_search_html(line: &Line) -> String {
         "<form class='search' action='{}'><input width='100%' type='text' placeholder='{}'></form>",
         line.url, line.name
     )
+}
+
+#[derive(RustEmbed)]
+#[folder = "static/"]
+pub struct Asset;
+
+/// Returns the bytes of a static asset.
+fn asset(filename: &str) -> Result<String> {
+    if let Some(path) = Asset::get(filename) {
+        Ok(std::str::from_utf8(path.as_ref())?.to_string())
+    } else {
+        Err(Box::new(io::Error::new(io::ErrorKind::Other, "Not found")))
+    }
 }

@@ -1,3 +1,4 @@
+use crate::server::Asset;
 use std::net::SocketAddr;
 
 pub struct Request {
@@ -14,17 +15,15 @@ impl Request {
         }
     }
 
-    /// Returns path to static file on disk asked for by this request.
+    /// Returns bytes of static file on disk.
     /// Ex: css files.
-    pub fn disk_path(&self) -> String {
-        let mut s = String::from("./static/");
-        s.push_str(&self.path);
-        s
+    pub fn static_file_bytes(&self) -> Option<std::borrow::Cow<'static, [u8]>> {
+        Asset::get(&self.path)
     }
 
     /// Is this request asking for a static file on disk?
     pub fn is_static_file(&self) -> bool {
-        std::path::Path::new(&self.disk_path()).is_file()
+        Asset::iter().find(|x| x == &self.path).is_some()
     }
 
     /// Path without the gopher://

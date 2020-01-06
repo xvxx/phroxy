@@ -48,8 +48,9 @@ browser to burrow through the Gophersphere with ease.
 
 ## installation
 
-binaries for linux, mac, and raspberry pi will be available soon
-at https://github.com/dvkt/phroxy/releases
+phroxy is currently only available through https://crates.io/:
+
+    cargo install phroxy
 
 ## development
 
