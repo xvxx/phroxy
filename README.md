@@ -6,7 +6,7 @@
 |                   /  \   /  
                    /    \
 --> <p align="center"> <img src="./img/logo.png"> <br> 
-<a href="https://github.com/dvkt/phroxy/releases">
+<a href="https://crates.io/crates/phroxy">
 <img src="https://img.shields.io/crates/v/phroxy">
 </a>
 </p>
