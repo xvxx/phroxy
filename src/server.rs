@@ -134,7 +134,7 @@ fn to_menu_html(url: String, gopher: String) -> String {
 fn to_text_html(_url: String, gopher: String) -> String {
     format!(
         "<div class='text'>{}</div>",
-        htmlescape::encode_minimal(&gopher)
+        htmlescape::encode_minimal(&gopher.trim_end_matches(".\r\n"))
     )
 }
 
