@@ -1,6 +1,6 @@
 [package]
 name = "phroxy"
-version = "0.1.0"
+version = "0.1.1-dev"
 authors = ["dvkt <c@dvkt.io>"]
 edition = "2018"
 license = "MIT"
