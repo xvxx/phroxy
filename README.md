@@ -14,7 +14,7 @@
 
 `phroxy` is a small, multi-threaded web server that proxies Gopher
 requests through HTTP. It's meant to be run locally and was written
-for [gogo](https://github.com/dvkt/gogo), a WebKit Gopher client.
+for [gogo](https://github.com/xvxx/gogo), a WebKit Gopher client.
 
 Run it in a terminal then visit the local URL in your favorite web
 browser to burrow through the Gophersphere with ease.
@@ -59,7 +59,7 @@ phroxy is currently only available through https://crates.io/:
 ## credits
 
 phroxy's design is based on 
-[phetch](https://github.com/dvkt/phetch)
+[phetch](https://github.com/xvxx/phetch)
 and inspired by
 [Gaufre](https://gitlab.com/commonshost/gaufre).
 

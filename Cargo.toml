@@ -1,12 +1,12 @@
 [package]
 name = "phroxy"
 version = "0.1.2-dev"
-authors = ["dvkt <c@dvkt.io>"]
+authors = ["chris west <c@xvxx.io>"]
 edition = "2018"
 license = "MIT"
 description = "phroxy proxies gopher through HTTP"
 readme = "README.md"
-repository = "https://github.com/dvkt/phroxy"
+repository = "https://github.com/xvxx/phroxy"
 keywords = ["gopher", "proxy"]
 exclude = [
     "img/*"
