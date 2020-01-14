@@ -138,6 +138,9 @@ fn user_input_to_url(input: &str) -> Cow<str> {
     } else if !input.contains('.') && !input.contains('/') {
         // no dot and no slash is also a search query
         search_url(input)
+    } else if input.starts_with("gopher://") {
+        // strip gopher:// from input
+        Cow::from(&input["gopher://".len()..])
     } else {
         // anything else is a url
         Cow::from(input)
