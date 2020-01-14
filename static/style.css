@@ -28,6 +28,11 @@ a, a:visited {
     text-decoration: underline;
 }
 
+.content .Error a {
+    color: red;
+    font-weight: bold;
+}
+
 .content .Text a {
     color: #14ffff;
 }
