@@ -23,6 +23,11 @@ a, a:visited {
     color: #198fff;
 }
 
+.content .Binary a {
+    color: white;
+    text-decoration: underline;
+}
+
 .content .Text a {
     color: #14ffff;
 }
