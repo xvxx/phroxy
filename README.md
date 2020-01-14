@@ -1,11 +1,11 @@
 <!--
-      /            \    /      
- ___ (___  ___  ___ \  /       
+      /            \    /
+ ___ (___  ___  ___ \  /
 |   )|   )|   )|   ) \/  \   )
-|__/ |  / |    |__/  /\   \_/ 
-|                   /  \   /  
+|__/ |  / |    |__/  /\   \_/
+|                   /  \   /
                    /    \
---> <p align="center"> <img src="./img/logo.png"> <br> 
+--> <p align="center"> <img src="./img/logo.png"> <br>
 <a href="https://crates.io/crates/phroxy">
 <img src="https://img.shields.io/crates/v/phroxy">
 </a>
@@ -51,9 +51,9 @@ behind an HTTPS proxy like [Caddy](https://caddyserver.com/v1/):
         -p, --port NUM    Port to bind to.
         -h, --host NAME   Hostname to bind to.
         -g, --gopher URL  Default Gopher URL to load.
-    
-    Other flags:  
-    
+
+    Other flags:
+
         -h, --help        Print this screen.
         -v, --version     Print phroxy version.
 
@@ -81,7 +81,7 @@ perhaps?
 
 ## credits
 
-phroxy's design is based on 
+phroxy's design is based on
 [phetch](https://github.com/xvxx/phetch)
 and inspired by
 [Gaufre](https://gitlab.com/commonshost/gaufre).
@@ -92,7 +92,7 @@ https://gopher.floodgap.com/gopher/.
 It was made for gogo, which was inspired by lartu's
 [OpenNapkin](https://github.com/Lartu/OpenNapkin) client.
 
-## todo 
+## todo
 
-- [ ] systemd example
-- [ ] man page 
+- [ ] man page
+

@@ -1,0 +1,14 @@
+# install:
+#   cp phroxy.service /etc/systemd/system/ && systemctl enable phroxy.service && systemctl start phroxy
+
+[Unit]
+Description=phroxy web<->gopher proxy
+After=network.target
+
+[Service]
+Restart=always
+ExecStart=/usr/local/bin/phroxy -p 8080
+
+[Install]
+WantedBy=multi-user.target
+
