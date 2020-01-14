@@ -80,27 +80,46 @@ fn write_response<'a, W>(mut w: &'a W, req: Request) -> Result<()>
 where
     &'a W: Write,
 {
-    let layout = asset("layout.html")?;
     let response = match fetch(&req.path) {
-        Ok(content) => {
-            let rendered = layout
-                .replace("{{content}}", &to_html(req.target_url(), content))
-                .replace("{{url}}", &req.short_target_url())
-                .replace("{{title}}", "phroxy");
-            println!("└ {}", "200 OK");
-            format!("HTTP/1.1 200 OK\r\n\r\n{}", rendered)
-        }
+        Ok(content) => match render(&req, &content) {
+            Ok(rendered) => {
+                println!("└ {}", "200 OK");
+                format!("HTTP/1.1 200 OK\r\n\r\n{}", rendered)
+            }
+            Err(e) => {
+                let res = "500 Internal Server Error";
+                println!("├ {}", res);
+                println!("└ {}", e);
+                format!(
+                    "HTTP/1.1 {}\r\n\r\n{}",
+                    res,
+                    render(&req, &format!("3{}", res))?
+                )
+            }
+        },
         Err(e) => {
-            println!("│ path: {}", req.path);
-            println!("├ {}: {}", "404 Not Found", req.path);
+            let res = "404 Not Found";
+            println!("├ {}: {}", res, req.path);
             println!("└ {}", e);
-            format!("HTTP/1.1 404 Not Found\r\n\r\n{}", e)
+            format!(
+                "HTTP/1.1 {}\r\n\r\n{}",
+                res,
+                render(&req, &format!("3{}", res))?
+            )
         }
     };
 
     w.write(response.as_bytes()).unwrap();
     w.flush().unwrap();
     Ok(())
+}
+
+fn render(req: &Request, content: &str) -> Result<String> {
+    let layout = asset("layout.html")?;
+    Ok(layout
+        .replace("{{content}}", &to_html(req.target_url(), content))
+        .replace("{{url}}", req.short_target_url())
+        .replace("{{title}}", "phroxy"))
 }
 
 /// Fetch the Gopher response for a given URL or search term.
@@ -133,8 +152,8 @@ fn search_url(query: &str) -> Cow<str> {
 }
 
 /// Convert a Gopher response into HTML (links, etc).
-fn to_html(url: String, gopher: String) -> String {
-    if let (gopher::Type::Text, _, _, _) = gopher::parse_url(&url) {
+fn to_html(url: &str, gopher: &str) -> String {
+    if let (gopher::Type::Text, _, _, _) = gopher::parse_url(url) {
         to_text_html(url, gopher)
     } else {
         to_menu_html(url, gopher)
@@ -143,9 +162,9 @@ fn to_html(url: String, gopher: String) -> String {
 
 /// Convert a Gopher response into an HTML Gopher menu, with links and
 /// inline search fields.
-fn to_menu_html(url: String, gopher: String) -> String {
+fn to_menu_html(url: &str, gopher: &str) -> String {
     let mut out = String::new();
-    let menu = Menu::parse(url, gopher);
+    let menu = Menu::parse(url.to_string(), gopher.to_string());
     for line in menu.lines {
         out.push_str(&format!("<div class='line {:?}'>", line.typ));
         if line.typ == gopher::Type::HTML {
@@ -169,7 +188,7 @@ fn to_menu_html(url: String, gopher: String) -> String {
 }
 
 /// Convert a Gopher text file into HTML representing it.
-fn to_text_html(_url: String, gopher: String) -> String {
+fn to_text_html(_url: &str, gopher: &str) -> String {
     format!(
         "<div class='text'>{}</div>",
         htmlescape::encode_minimal(&gopher.trim_end_matches(".\r\n"))

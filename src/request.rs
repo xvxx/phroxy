@@ -53,13 +53,17 @@ impl Request {
     }
 
     /// Target URL this request wraps. Non-phroxy URL, like sdf.org.
-    pub fn target_url(&self) -> String {
-        self.path.clone()
+    pub fn target_url(&self) -> &str {
+        self.path.as_ref()
     }
 
     /// Target URL without the gopher://
-    pub fn short_target_url(&self) -> String {
-        self.path.replace("gopher://", "")
+    pub fn short_target_url(&self) -> &str {
+        if self.target_url().starts_with("gopher://") {
+            &self.target_url()["gopher://".len()..]
+        } else {
+            self.target_url()
+        }
     }
 
     /// Return the phroxy URL for this request.
