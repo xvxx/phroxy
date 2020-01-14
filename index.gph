@@ -6,7 +6,7 @@ i|   )|   )|   )|   ) \/  \   )  	/spacer
 |                   /  \   /  
                    /    \
 
-  ~ http <-> gopher proxy ~
+   ~ web <-> gopher proxy ~
 
 [7|search gopher|/v2/vs|gopher.floodgap.com]
 [1|gopherpedia|/|gopherpedia.com|70]
