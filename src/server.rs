@@ -6,6 +6,7 @@ use phetch::{
 };
 use rust_embed::RustEmbed;
 use std::{
+    borrow::Cow,
     io::{self, prelude::*, BufReader, Read, Write},
     net::{TcpListener, TcpStream},
 };
@@ -80,7 +81,7 @@ where
     &'a W: Write,
 {
     let layout = asset("layout.html")?;
-    let response = match gopher::fetch_url(&req.path) {
+    let response = match fetch(&req.path) {
         Ok(content) => {
             let rendered = layout
                 .replace("{{content}}", &to_html(req.target_url(), content))
@@ -100,6 +101,35 @@ where
     w.write(response.as_bytes()).unwrap();
     w.flush().unwrap();
     Ok(())
+}
+
+/// Fetch the Gopher response for a given URL or search term.
+/// A "search term" is anything that isn't a URL.
+fn fetch(url_or_search_term: &str) -> io::Result<String> {
+    gopher::fetch_url(&user_input_to_url(url_or_search_term))
+}
+
+/// Parses user input from the search/url box into a Gopher URL. The
+/// input can either be a literal URL or a search term that is
+/// translated into a Veronica query.
+fn user_input_to_url(input: &str) -> Cow<str> {
+    // space and no slash means search query
+    if input.contains(' ') && !input.contains('/') {
+        search_url(input)
+    } else if !input.contains('.') && !input.contains('/') {
+        // no dot and no slash is also a search query
+        search_url(input)
+    } else {
+        // anything else is a url
+        Cow::from(input)
+    }
+}
+
+/// Given a search term, returns a Gopher URL to search for it.
+fn search_url(query: &str) -> Cow<str> {
+    let mut out = "gopher.floodgap.com/7/v2/vs?".to_string();
+    out.push_str(query);
+    Cow::from(out)
 }
 
 /// Convert a Gopher response into HTML (links, etc).
@@ -164,5 +194,33 @@ fn asset(filename: &str) -> Result<String> {
         Ok(std::str::from_utf8(path.as_ref())?.to_string())
     } else {
         Err(Box::new(io::Error::new(io::ErrorKind::Other, "Not found")))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_user_input_to_url() {
+        assert_eq!(
+            user_input_to_url("rust"),
+            "gopher.floodgap.com/7/v2/vs?rust"
+        );
+        assert_eq!(user_input_to_url("phkt.io"), "phkt.io");
+        assert_eq!(user_input_to_url("gopher://phkt.io"), "phkt.io");
+        assert_eq!(user_input_to_url("pizza.party:7070"), "pizza.party:7070");
+        assert_eq!(
+            user_input_to_url("phkt.io/1/code/phd/src"),
+            "phkt.io/1/code/phd/src"
+        );
+        assert_eq!(
+            user_input_to_url("can dogs talk"),
+            "gopher.floodgap.com/7/v2/vs?can dogs talk"
+        );
+        assert_eq!(
+            user_input_to_url("gopher.floodgap.com/7/v2/vs?can gophers smell"),
+            "gopher.floodgap.com/7/v2/vs?can gophers smell"
+        );
     }
 }
