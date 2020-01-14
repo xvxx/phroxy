@@ -94,7 +94,5 @@ It was made for gogo, which was inspired by lartu's
 
 ## todo 
 
-- [ ] return 500s vs 404s accurately
-- [ ] user supplied css
 - [ ] systemd example
 - [ ] man page 
