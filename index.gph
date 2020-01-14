@@ -1,20 +1,30 @@
 
-      /            \    /      
- ___ (___  ___  ___ \  /       
-i|   )|   )|   )|   ) \/  \   )  	/spacer
-|__/ |  / |    |__/  /\   \_/ 
-|                   /  \   /  
-                   /    \
+           /            \    /
+      ___ (___  ___  ___ \  /
+i     |   )|   )|   )|   ) \/  \   )  	/spacer
+     |__/ |  / |    |__/  /\   \_/
+     |                   /  \   /
+                        /    \
 
-   ~ web <-> gopher proxy ~
+Welcome to phroxy, a bridge between the 
+World Wide Web and the Gophersphere.
 
-[7|search gopher|/v2/vs|gopher.floodgap.com]
-[1|gopherpedia|/|gopherpedia.com|70]
-[1|gopher lawn|/lawn|bitreich.org]
-[1|intro to gopher|/gopher|gopher.floodgap.com]
+To visit a Gopher site, just type its
+URL into the bar above this text (between
+"back" and "next"). You can also search
+Gopher using this bar.
+
+If you are new to Gopher, Floodgap is a
+great resource:
+
+[1|Floodgap's Gopher Overview|/gopher|gopher.floodgap.com]
+
+[7|Search Gopher|/v2/vs|gopher.floodgap.com]
+[1|Gopherpedia|/|gopherpedia.com|70]
+[1|Gopher Lawn|/lawn|bitreich.org]
+[1|Gopher Phlogs|/|sdf.org]
+
+[1|Gopher Clients|/gopher/clients|phkt.io]
+[h|Phroxy on GitHub|URL:https://github.com/xvxx/phroxy]
 
             ~ * ~
-
-[h|phroxy on github|URL:https://github.com/xvxx/phroxy]
-[1|phetch: terminal gopher client|/phetch|phkt.io]
-[1|phd: an esoteric gopher server|/phd|phkt.io]
