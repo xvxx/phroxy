@@ -194,8 +194,21 @@ fn to_menu_html(url: &str, gopher: &str) -> String {
 fn to_text_html(_url: &str, gopher: &str) -> String {
     format!(
         "<div class='text'>{}</div>",
-        htmlescape::encode_minimal(&gopher.trim_end_matches(".\r\n"))
+        link_urls(&htmlescape::encode_minimal(
+            gopher.trim_end_matches(".\r\n")
+        ))
     )
+}
+
+/// Autolink mailto, HTTP/S, and Gopher URLs in plain text.
+fn link_urls(input: &str) -> String {
+    let finder = linkify::LinkFinder::new();
+    let mut out = input.to_string();
+    for link in finder.links(&input) {
+        let url = link.as_str();
+        out = out.replace(url, &format!("<a href=\"{}\">{}</a>", url, url));
+    }
+    out.replace("href=\"gopher://", "href=\"/")
 }
 
 /// HTML for a Gopher Search item.
@@ -243,6 +256,24 @@ mod tests {
         assert_eq!(
             user_input_to_url("gopher.floodgap.com/7/v2/vs?can gophers smell"),
             "gopher.floodgap.com/7/v2/vs?can gophers smell"
+        );
+    }
+
+    #[test]
+    fn test_autolink() {
+        assert_eq!(
+            link_urls("Check out https://this-link.com!"),
+            "Check out <a href=\"https://this-link.com\">https://this-link.com</a>!"
+        );
+
+        assert_eq!(
+            link_urls("And also https://this.one.io."),
+            "And also <a href=\"https://this.one.io\">https://this.one.io</a>."
+        );
+
+        assert_eq!(
+            link_urls("Or this one: gopher://sdf.org/1/users/undo maybe"),
+            "Or this one: <a href=\"/sdf.org/1/users/undo\">gopher://sdf.org/1/users/undo</a> maybe"
         );
     }
 }
