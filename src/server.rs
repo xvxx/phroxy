@@ -84,7 +84,7 @@ where
             let rendered = layout
                 .replace("{{content}}", &to_html(req.path.clone(), content))
                 .replace("{{url}}", &req.short_path())
-                .replace("{{title}}", "🦀");
+                .replace("{{title}}", "phroxy");
             println!("│ {}", "200 OK");
             format!("HTTP/1.1 200 OK\r\n\r\n{}", rendered)
         }
@@ -117,7 +117,9 @@ fn to_menu_html(url: String, gopher: String) -> String {
     let menu = Menu::parse(url, gopher);
     for line in menu.lines {
         out.push_str(&format!("<div class='line {:?}'>", line.typ));
-        if line.typ != gopher::Type::Info && line.typ != gopher::Type::Search {
+        if line.typ == gopher::Type::HTML {
+            out.push_str(format!("<a href='{}'>", line.url).as_ref());
+        } else if line.typ != gopher::Type::Info && line.typ != gopher::Type::Search {
             out.push_str(format!("<a href='/{}'>", line.url).as_ref());
         }
         if line.name.is_empty() {
