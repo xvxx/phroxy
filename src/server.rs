@@ -87,7 +87,7 @@ where
                 .replace("{{content}}", &to_html(req.target_url(), content))
                 .replace("{{url}}", &req.short_target_url())
                 .replace("{{title}}", "phroxy");
-            println!("│ {}", "200 OK");
+            println!("└ {}", "200 OK");
             format!("HTTP/1.1 200 OK\r\n\r\n{}", rendered)
         }
         Err(e) => {
