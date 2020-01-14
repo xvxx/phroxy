@@ -61,9 +61,14 @@ where
     &'a W: Write,
 {
     println!("└ 200 OK: {}", req.path);
-    w.write(b"HTTP/1.1 200 OK\r\n\r\n")?;
+    w.write(b"HTTP/1.1 200 OK\r\n")?;
     if let Some(bytes) = req.static_file_bytes() {
+        write!(w, "content-type: {}\r\n", req.content_type())?;
+        write!(w, "content-length: {}\r\n", bytes.len())?;
+        w.write(b"\r\n")?;
         w.write(bytes.as_ref())?;
+    } else {
+        w.write(b"\r\n")?;
     }
     Ok(())
 }

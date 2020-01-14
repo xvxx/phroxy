@@ -1,5 +1,5 @@
 use crate::server::Asset;
-use std::net::SocketAddr;
+use std::{net::SocketAddr, path::Path};
 
 pub struct Request {
     pub addr: SocketAddr,
@@ -19,6 +19,27 @@ impl Request {
     /// Ex: css files.
     pub fn static_file_bytes(&self) -> Option<std::borrow::Cow<'static, [u8]>> {
         Asset::get(&self.path)
+    }
+
+    /// The HTTP content-type of the file on disk.
+    pub fn content_type(&self) -> &str {
+        if self.is_static_file() {
+            if let Some(ext) = Path::new(&self.path).extension() {
+                if let Some(ext) = ext.to_str() {
+                    return match ext {
+                        "jpg" | "jpeg" => "image/jpeg",
+                        "png" => "image/png",
+                        "gif" => "image/gif",
+                        "css" => "text/css",
+                        "js" => "text/javascript",
+                        "json" => "application/json",
+                        "html" => "text/html",
+                        _ => "text/plain",
+                    };
+                }
+            }
+        }
+        "text/html; charset=UTF-8"
     }
 
     /// Is this request asking for a static file on disk?
