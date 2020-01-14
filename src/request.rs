@@ -47,17 +47,22 @@ impl Request {
         Asset::iter().find(|x| x == &self.path).is_some()
     }
 
-    /// Path without the gopher://
-    pub fn short_path(&self) -> String {
-        self.path.replace("gopher://", "")
-    }
-
     /// Parse HTTP request line to fill out this Request.
     pub fn parse(&mut self, line: &str) {
         self.path = path_from_line(line);
     }
 
-    /// Return the URL for this request.
+    /// Target URL this request wraps. Non-phroxy URL, like sdf.org.
+    pub fn target_url(&self) -> String {
+        self.path.clone()
+    }
+
+    /// Target URL without the gopher://
+    pub fn short_target_url(&self) -> String {
+        self.path.replace("gopher://", "")
+    }
+
+    /// Return the phroxy URL for this request.
     pub fn url(&self) -> String {
         format!("{}/{}", self.addr, self.path)
     }

@@ -44,15 +44,13 @@ behind an HTTPS proxy like [Caddy](https://caddyserver.com/v1/):
 
 ## usage
 
-    Usage:
-    
         phroxy [options]
 
     Options:
 
         -p, --port NUM    Port to bind to.
         -h, --host NAME   Hostname to bind to.
-                          Default: 0.0.0.0
+        -g, --gopher URL  Default Gopher URL to load.
     
     Other flags:  
     
@@ -68,6 +66,18 @@ phroxy is currently only available through https://crates.io/:
 ## development
 
     cargo run -- -p 8080
+
+You can set the start screen to your own Gopher server. [phd][phd]
+perhaps?
+
+    # start gopher
+    phd
+    ┬ Listening on 0.0.0.0:7070 at /Users/randy/Code/phroxy
+
+    # then start phroxy
+    cargo run -- -p 8080 -g 0.0.0.0:7070
+    # and visit it in your web browser
+    open http://127.0.0.1:8080
 
 ## credits
 

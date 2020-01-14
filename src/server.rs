@@ -1,4 +1,4 @@
-use crate::{request::Request, Result, DEFAULT_GOPHERHOLE};
+use crate::{request::Request, Result};
 use htmlescape;
 use phetch::{
     gopher,
@@ -16,7 +16,7 @@ use threadpool::ThreadPool;
 const MAX_WORKERS: usize = 10;
 
 /// Starts a web server locally.
-pub fn start(listener: TcpListener) -> Result<()> {
+pub fn start(listener: TcpListener, default_url: &str) -> Result<()> {
     let pool = ThreadPool::new(MAX_WORKERS);
     let addr = listener.local_addr()?;
 
@@ -24,9 +24,10 @@ pub fn start(listener: TcpListener) -> Result<()> {
     for stream in listener.incoming() {
         let req = Request::from(addr.clone());
         let stream = stream?;
+        let default = default_url.to_string();
         println!("┌ Connection from {}", stream.peer_addr()?);
         pool.execute(move || {
-            if let Err(e) = handle_request(stream, req) {
+            if let Err(e) = handle_request(stream, req, &default) {
                 eprintln!("└ {}", e);
             }
         });
@@ -35,7 +36,7 @@ pub fn start(listener: TcpListener) -> Result<()> {
 }
 
 /// Reads from the client and responds.
-fn handle_request(mut stream: TcpStream, mut req: Request) -> Result<()> {
+fn handle_request(mut stream: TcpStream, mut req: Request, default_url: &str) -> Result<()> {
     let mut buffer = [0; 512];
     stream.read(&mut buffer).unwrap();
     let reader = BufReader::new(buffer.as_ref());
@@ -43,7 +44,7 @@ fn handle_request(mut stream: TcpStream, mut req: Request) -> Result<()> {
         println!("│ {}", line);
         req.parse(&line);
         if req.path.is_empty() {
-            req.path = DEFAULT_GOPHERHOLE.into();
+            req.path = default_url.into();
         }
 
         if req.is_static_file() {
@@ -82,8 +83,8 @@ where
     let response = match gopher::fetch_url(&req.path) {
         Ok(content) => {
             let rendered = layout
-                .replace("{{content}}", &to_html(req.path.clone(), content))
-                .replace("{{url}}", &req.short_path())
+                .replace("{{content}}", &to_html(req.target_url(), content))
+                .replace("{{url}}", &req.short_target_url())
                 .replace("{{title}}", "phroxy");
             println!("│ {}", "200 OK");
             format!("HTTP/1.1 200 OK\r\n\r\n{}", rendered)
