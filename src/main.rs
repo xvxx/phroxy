@@ -63,7 +63,7 @@ Options:
 Other flags:  
   
     -h, --help        Print this screen.
-    -v, --version     Print phd version."
+    -v, --version     Print phroxy version."
     );
 }
 

@@ -13,11 +13,23 @@
 
 
 `phroxy` is a small, multi-threaded web server that proxies Gopher
-requests through HTTP. It's meant to be run locally and was written
-for [gogo](https://github.com/xvxx/gogo), a WebKit Gopher client.
+requests through HTTP. It's meant to be run locally or behind an HTTPS
+proxy and was written for [gogo](https://github.com/xvxx/gogo), a
+WebKit-based Gopher desktop client.
 
-Run it in a terminal then visit the local URL in your favorite web
-browser to burrow through the Gophersphere with ease.
+To use it locally, run `phroxy` in a terminal then visit the local URL
+in your favorite web browser. You'll be burrowin through the
+Gophersphere with ease in no time!
+
+If you want to setup a private instance of phroxy on the real web so
+you can browse Gopher using your tablet or TV, we recommend running it
+behind an HTTPS proxy like [Caddy](https://caddyserver.com/v1/):
+
+    $ cat Caddyfile
+    your-website.com
+    proxy / localhost:8080
+    $ phroxy -p 8080
+    Listening at http://0.0.0.0:8080...
 
 ## screenies
 
@@ -40,11 +52,12 @@ browser to burrow through the Gophersphere with ease.
 
         -p, --port NUM    Port to bind to.
         -h, --host NAME   Hostname to bind to.
+                          Default: 0.0.0.0
     
     Other flags:  
     
         -h, --help        Print this screen.
-        -v, --version     Print phd version.
+        -v, --version     Print phroxy version.
 
 ## installation
 
