@@ -5,6 +5,7 @@ authors = ["chris west <c@xvxx.io>"]
 edition = "2018"
 license = "MIT"
 description = "phroxy proxies gopher through HTTP"
+homepage = "https://phroxy.net"
 readme = "README.md"
 repository = "https://github.com/xvxx/phroxy"
 keywords = ["gopher", "proxy"]
