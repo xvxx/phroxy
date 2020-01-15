@@ -6,7 +6,7 @@ i     |   )|   )|   )|   ) \/  \   )  	/spacer
      |                   /  \   /
                         /    \
 
-Welcome to phroxy, a bridge between the 
+Welcome to phroxy, a bridge between the
 World Wide Web and the Gophersphere.
 
 To visit a Gopher site, just type its
@@ -22,6 +22,6 @@ click on one of the links below.
 [1|Gopher Lawn|/lawn|bitreich.org]
 [1|Gopher Phlogs|/|sdf.org]
 
-[1|Gopher Clients|/gopher/clients|phkt.io]
+#[1|Gopher Clients|/gopher/clients|phkt.io]
 [h|Phroxy on GitHub|URL:https://github.com/xvxx/phroxy]
 
