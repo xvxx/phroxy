@@ -125,7 +125,7 @@ fn render(req: &Request, content: &str) -> Result<String> {
 /// Fetch the Gopher response for a given URL or search term.
 /// A "search term" is anything that isn't a URL.
 fn fetch(url_or_search_term: &str) -> io::Result<String> {
-    gopher::fetch_url(&user_input_to_url(url_or_search_term))
+    gopher::fetch_url(&user_input_to_url(url_or_search_term), true, false).and_then(|res| Ok(res.1))
 }
 
 /// Parses user input from the search/url box into a Gopher URL. The
@@ -156,7 +156,7 @@ fn search_url(query: &str) -> Cow<str> {
 
 /// Convert a Gopher response into HTML (links, etc).
 fn to_html(url: &str, gopher: &str) -> String {
-    if let (gopher::Type::Text, _, _, _) = gopher::parse_url(url) {
+    if gopher::type_for_url(url).is_text() {
         to_text_html(url, gopher)
     } else {
         to_menu_html(url, gopher)
@@ -167,22 +167,22 @@ fn to_html(url: &str, gopher: &str) -> String {
 /// inline search fields.
 fn to_menu_html(url: &str, gopher: &str) -> String {
     let mut out = String::new();
-    let menu = Menu::parse(url.to_string(), gopher.to_string());
+    let menu = Menu::parse(url, gopher.to_string());
     for line in menu.lines {
         out.push_str(&format!("<div class='line {:?}'>", line.typ));
-        if line.typ == gopher::Type::HTML {
+        if line.typ.is_html() {
             out.push_str(format!("<a href='{}'>", line.url).as_ref());
-        } else if line.typ != gopher::Type::Info && line.typ != gopher::Type::Search {
+        } else if !line.typ.is_info() && line.typ != gopher::Type::Search {
             out.push_str(format!("<a href='/{}'>", line.url).as_ref());
         }
-        if line.name.is_empty() {
+        if line.text.is_empty() {
             out.push_str("&nbsp;");
         } else if line.typ == gopher::Type::Search {
             out.push_str(&to_search_html(&line));
         } else {
-            out.push_str(&htmlescape::encode_minimal(&line.name));
+            out.push_str(&htmlescape::encode_minimal(&line.text));
         }
-        if line.typ != gopher::Type::Info && line.typ != gopher::Type::Search {
+        if !line.typ.is_info() && line.typ != gopher::Type::Search {
             out.push_str("</a>");
         }
         out.push_str("</div>");
@@ -215,7 +215,7 @@ fn link_urls(input: &str) -> String {
 fn to_search_html(line: &Line) -> String {
     format!(
         "<form class='search' action='{}'><input width='100%' type='text' placeholder='{}'></form>",
-        line.url, line.name
+        line.url, line.text
     )
 }
 
