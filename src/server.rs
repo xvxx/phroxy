@@ -205,9 +205,10 @@ fn link_urls(input: &str) -> String {
     let finder = linkify::LinkFinder::new();
     let mut out = input.to_string();
     for link in finder.links(&input) {
+        let url = link.as_str();
         out.replace_range(
             link.start()..link.end(),
-            &format!("<a href=\"{}\">{}</a>", link.as_str(), link.as_str()),
+            &format!("<a href=\"{}\">{}</a>", url, url),
         );
     }
     out.replace("href=\"gopher://", "href=\"/")
@@ -276,6 +277,11 @@ mod tests {
         assert_eq!(
             link_urls("Or this one: gopher://sdf.org/1/users/undo maybe"),
             "Or this one: <a href=\"/sdf.org/1/users/undo\">gopher://sdf.org/1/users/undo</a> maybe"
+        );
+
+        assert_eq!(
+            link_urls("Check out https://this-link.com! And also https://this.one.io. Or this one: gopher://sdf.org/1/users/undo maybe"),
+            "Check out <a href=\"https://this-link.com\">https://this-link.com</a>! And also <a href=\"https://this.one.io\">https://this.one.io</a>. Or this one: <a href=\"/sdf.org/1/users/undo\">gopher://sdf.org/1/users/undo</a> maybe"
         );
     }
 }
