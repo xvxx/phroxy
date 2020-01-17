@@ -2,7 +2,7 @@ use crate::{request::Request, Result};
 use htmlescape;
 use phetch::{
     gopher,
-    menu::{Line, Menu},
+    menu::{self, Line},
 };
 use rust_embed::RustEmbed;
 use std::{
@@ -167,7 +167,7 @@ fn to_html(url: &str, gopher: &str) -> String {
 /// inline search fields.
 fn to_menu_html(url: &str, gopher: &str) -> String {
     let mut out = String::new();
-    let menu = Menu::parse(url, gopher.to_string());
+    let menu = menu::parse(url, gopher.to_string());
     for line in menu.lines {
         out.push_str(&format!("<div class='line {:?}'>", line.typ));
         if line.typ.is_html() {
