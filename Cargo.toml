@@ -24,7 +24,7 @@ dev-version-ext = "dev"
 
 [dependencies]
 threadpool = "1.7.1"
-phetch = { git = "https://github.com/xvxx/phetch" }
+phetch = { git = "https://github.com/xvxx/phetch", branch = "master" }
 htmlescape = "0.3.1"
 rust-embed="5.2.0"
 linkify = "0.4.0"
