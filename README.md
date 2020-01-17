@@ -17,9 +17,9 @@ requests through HTTP. It's meant to be run locally or behind an HTTPS
 proxy and was written for [gogo](https://github.com/xvxx/gogo), a
 WebKit-based Gopher desktop client.
 
-To use it locally, run `phroxy` in a terminal then visit the local URL
+To use it locally, run `phroxy` in a terminal then visit its URL
 in your favorite web browser. You'll be burrowin through the
-Gophersphere with ease in no time!
+Gophersphere in no time!
 
 If you want to setup a private instance of phroxy on the real web so
 you can browse Gopher using your tablet or TV, we recommend running it
@@ -28,8 +28,14 @@ behind an HTTPS proxy like [Caddy](https://caddyserver.com/v1/):
     $ cat Caddyfile
     your-website.com
     proxy / localhost:8080
+    $ sudo caddy -host your-website.com
+    # in another terminal:
     $ phroxy -p 8080
     Listening at http://0.0.0.0:8080...
+
+Behind the scenes, phroxy attempts to make all Gopher connections
+using "secure Gopher" (TLS). If that doesn't work, it drops to a
+regular TCP connection.
 
 ## screenies
 
