@@ -205,8 +205,10 @@ fn link_urls(input: &str) -> String {
     let finder = linkify::LinkFinder::new();
     let mut out = input.to_string();
     for link in finder.links(&input) {
-        let url = link.as_str();
-        out = out.replace(url, &format!("<a href=\"{}\">{}</a>", url, url));
+        out.replace_range(
+            link.start()..link.end(),
+            &format!("<a href=\"{}\">{}</a>", link.as_str(), link.as_str()),
+        );
     }
     out.replace("href=\"gopher://", "href=\"/")
 }
