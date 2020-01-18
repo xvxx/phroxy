@@ -28,3 +28,4 @@ phetch = { git = "https://github.com/xvxx/phetch", branch = "master" }
 htmlescape = "0.3.1"
 rust-embed="5.2.0"
 linkify = "0.4.0"
+regex = "1.3.3"

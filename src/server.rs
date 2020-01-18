@@ -1,4 +1,4 @@
-use crate::{request::Request, Result};
+use crate::{autolink::auto_link, request::Request, Result};
 use htmlescape;
 use phetch::{
     gopher,
@@ -202,16 +202,7 @@ fn to_text_html(_url: &str, gopher: &str) -> String {
 
 /// Autolink mailto, HTTP/S, and Gopher URLs in plain text.
 fn link_urls(input: &str) -> String {
-    let finder = linkify::LinkFinder::new();
-    let mut out = input.to_string();
-    for link in finder.links(&input) {
-        let url = link.as_str();
-        out.replace_range(
-            link.start()..link.end(),
-            &format!("<a href=\"{}\">{}</a>", url, url),
-        );
-    }
-    out.replace("href=\"gopher://", "href=\"/")
+    auto_link(input).replace("href=\"gopher://", "href=\"/")
 }
 
 /// HTML for a Gopher Search item.
