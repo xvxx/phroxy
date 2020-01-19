@@ -304,5 +304,13 @@ mod tests {
             filter_gopher_response("Welcome to \x1b[93;1mphetch\x1b[0m!"),
             "Welcome to phetch!"
         );
+
+        assert_eq!(filter_gopher_response("
+i> likes	(null)	phkt.io	70
+i[0mkitty, fish, c, rust, gopher, arch	(null)	phkt.io	70
+i	(null)	phkt.io	70
+i> dislikes	(null)	phkt.io	70
+i[0mcilantro, fig newtons, big files	(null)	phkt.io	70
+i	(null)	phkt.io	70"), "\ni> likes\t(null)\tphkt.io\t70\nikitty, fish, c, rust, gopher, arch\t(null)\tphkt.io\t70\ni\t(null)\tphkt.io\t70\ni> dislikes\t(null)\tphkt.io\t70\nicilantro, fig newtons, big files\t(null)\tphkt.io\t70\ni\t(null)\tphkt.io\t70");
     }
 }

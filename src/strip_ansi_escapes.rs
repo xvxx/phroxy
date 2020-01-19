@@ -101,8 +101,12 @@ where
     }
     fn execute(&mut self, byte: u8) {
         // We only care about executing linefeeds and tabs.
-        if byte == b'\n' || byte == b'\r' || byte == b'\t' {
+        if byte == b'\n' {
             self.err = writeln!(self.writer, "").err();
+        } else if byte == b'\t' {
+            self.err = write!(self.writer, "\t").err();
+        } else if byte == b'\r' {
+            self.err = write!(self.writer, "\r").err();
         }
     }
     // Since we're not actually implementing a terminal, we just ignore everything else.
