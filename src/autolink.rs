@@ -1,5 +1,6 @@
 // Copied from https://git.cypr.io/oz/autolink-rust
 // Copyright (c) 2015 Arnaud Berthomier
+// MIT License
 // Updated to use regex from https://mathiasbynens.be/demo/url-regex
 
 use regex::Regex;

@@ -1,4 +1,4 @@
-use crate::{autolink::auto_link, request::Request, Result};
+use crate::{autolink::auto_link, request::Request, strip_ansi_escapes, Result};
 use htmlescape;
 use phetch::{
     gopher,
@@ -125,7 +125,22 @@ fn render(req: &Request, content: &str) -> Result<String> {
 /// Fetch the Gopher response for a given URL or search term.
 /// A "search term" is anything that isn't a URL.
 fn fetch(url_or_search_term: &str) -> io::Result<String> {
-    gopher::fetch_url(&user_input_to_url(url_or_search_term), true, false).and_then(|res| Ok(res.1))
+    gopher::fetch_url(&user_input_to_url(url_or_search_term), true, false)
+        .and_then(|res| Ok(filter_gopher_response(&res.1).to_string()))
+}
+
+/// Filter ANSI escape codes and other weirdness from Gopher
+/// responses, since we're displaying this in a web browser.
+/// Maybe in the future we could
+fn filter_gopher_response(input: &str) -> Cow<str> {
+    if let Ok(stripped) = strip_ansi_escapes::strip(input) {
+        if stripped.len() != input.len() {
+            if let Ok(stripped) = std::str::from_utf8(&stripped) {
+                return Cow::from(stripped.to_string());
+            }
+        }
+    }
+    Cow::from(input)
 }
 
 /// Parses user input from the search/url box into a Gopher URL. The
@@ -273,6 +288,21 @@ mod tests {
         assert_eq!(
             link_urls("Check out https://this-link.com! And also https://this.one.io. Or this one: gopher://sdf.org/1/users/undo maybe"),
             "Check out <a href=\"https://this-link.com\">https://this-link.com</a>! And also <a href=\"https://this.one.io\">https://this.one.io</a>. Or this one: <a href=\"/sdf.org/1/users/undo\">gopher://sdf.org/1/users/undo</a> maybe"
+        );
+    }
+
+    #[test]
+    fn test_filter_gopher_response() {
+        assert_eq!(filter_gopher_response("Testing 1 2 3"), "Testing 1 2 3");
+
+        assert_eq!(
+            filter_gopher_response("One\n\tTwo\r\nThree"),
+            "One\n\tTwo\r\nThree"
+        );
+
+        assert_eq!(
+            filter_gopher_response("Welcome to \x1b[93;1mphetch\x1b[0m!"),
+            "Welcome to phetch!"
         );
     }
 }
