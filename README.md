@@ -18,7 +18,7 @@ proxy and was written for [gogo](https://github.com/xvxx/gogo), a
 WebKit-based Gopher desktop client.
 
 To use it locally, run `phroxy` in a terminal then visit its URL
-in your favorite web browser. You'll be burrowin through the
+in your favorite web browser. You'll be burrowin' through the
 Gophersphere in no time!
 
 If you want to setup a private instance of phroxy on the real web so
@@ -68,6 +68,14 @@ regular TCP connection.
 phroxy is currently only available through https://crates.io/:
 
     cargo install phroxy
+
+You can also build a release binary yourself by cloning this
+repository:
+
+    git clone https://github.com/xvxx/phroxy
+    cd phroxy
+    cargo build --release
+    ./target/release/phroxy -h
 
 ## development
 
