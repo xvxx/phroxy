@@ -146,27 +146,24 @@ fn filter_gopher_response(input: &str) -> Cow<str> {
 /// Parses user input from the search/url box into a Gopher URL. The
 /// input can either be a literal URL or a search term that is
 /// translated into a Veronica query.
-fn user_input_to_url(input: &str) -> Cow<str> {
+fn user_input_to_url(input: &str) -> String {
     // space and no slash means search query
     if input.contains(' ') && !input.contains('/') {
         search_url(input)
     } else if !input.contains('.') && !input.contains('/') {
         // no dot and no slash is also a search query
         search_url(input)
-    } else if input.starts_with("gopher://") {
-        // strip gopher:// from input
-        Cow::from(&input["gopher://".len()..])
     } else {
         // anything else is a url
-        Cow::from(input.replace("%20", " "))
+        input.replace("%20", " ").replace("gopher://", "")
     }
 }
 
 /// Given a search term, returns a Gopher URL to search for it.
-fn search_url(query: &str) -> Cow<str> {
+fn search_url(query: &str) -> String {
     let mut out = "gopher.floodgap.com/7/v2/vs?".to_string();
     out.push_str(query);
-    Cow::from(out)
+    out
 }
 
 /// Convert a Gopher response into HTML (links, etc).
