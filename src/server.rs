@@ -158,7 +158,7 @@ fn user_input_to_url(input: &str) -> Cow<str> {
         Cow::from(&input["gopher://".len()..])
     } else {
         // anything else is a url
-        Cow::from(input)
+        Cow::from(input.replace("%20", " "))
     }
 }
 
@@ -263,7 +263,7 @@ mod tests {
             "gopher.floodgap.com/7/v2/vs?can dogs talk"
         );
         assert_eq!(
-            user_input_to_url("gopher.floodgap.com/7/v2/vs?can gophers smell"),
+            user_input_to_url("gopher.floodgap.com/7/v2/vs?can%20gophers%20smell"),
             "gopher.floodgap.com/7/v2/vs?can gophers smell"
         );
     }
