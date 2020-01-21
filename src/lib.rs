@@ -1,4 +1,3 @@
-pub mod autolink;
 pub mod request;
 pub mod server;
 pub mod strip_ansi_escapes;
