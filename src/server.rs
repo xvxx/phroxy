@@ -184,16 +184,16 @@ fn to_menu_html(url: &str, gopher: &str) -> String {
     for line in menu.lines {
         out.push_str(&format!("<div class='line {:?}'>", line.typ));
         if line.typ.is_html() {
-            out.push_str(format!("<a href='{}'>", line.url).as_ref());
+            out.push_str(format!("<a href='{}'>", line.url(gopher)).as_ref());
         } else if !line.typ.is_info() && line.typ != gopher::Type::Search {
-            out.push_str(format!("<a href='/{}'>", line.url).as_ref());
+            out.push_str(format!("<a href='/{}'>", line.url(gopher)).as_ref());
         }
-        if line.text.is_empty() {
+        if line.text(gopher).is_empty() {
             out.push_str("&nbsp;");
         } else if line.typ == gopher::Type::Search {
-            out.push_str(&to_search_html(&line));
+            out.push_str(&to_search_html(&line, gopher));
         } else {
-            out.push_str(&htmlescape::encode_minimal(&line.text));
+            out.push_str(&htmlescape::encode_minimal(&line.text(gopher)));
         }
         if !line.typ.is_info() && line.typ != gopher::Type::Search {
             out.push_str("</a>");
@@ -219,10 +219,11 @@ fn link_urls(input: &str) -> String {
 }
 
 /// HTML for a Gopher Search item.
-fn to_search_html(line: &Line) -> String {
+fn to_search_html(line: &Line, raw: &str) -> String {
     format!(
         "<form class='search' action='{}'><input width='100%' type='text' placeholder='{}'></form>",
-        line.url, line.text
+        line.url(raw),
+        line.text(raw)
     )
 }
 
