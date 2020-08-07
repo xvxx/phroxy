@@ -2,7 +2,7 @@ use crate::{request::Request, strip_ansi_escapes, Result};
 use autolink;
 use htmlescape;
 use phetch::{
-    gopher,
+    gopher::{self, Type},
     menu::{self, Line},
 };
 use rust_embed::RustEmbed;
@@ -81,15 +81,28 @@ fn write_response<'a, W>(mut w: &'a W, req: Request) -> Result<()>
 where
     &'a W: Write,
 {
-    let response = match fetch(&req.path) {
-        Ok(content) => match render(&req, &content) {
-            Ok(rendered) => {
-                println!("└ {}", "200 OK");
-                format!("HTTP/1.1 200 OK\r\n\r\n{}", rendered)
-            }
+    let url = gopher::parse_url(&req.path);
+    let response = match url.typ {
+        Type::Info | Type::Menu | Type::Text => match fetch(&req.path) {
+            Ok(content) => match render(&req, &content) {
+                Ok(rendered) => {
+                    println!("└ {}", "200 OK");
+                    format!("HTTP/1.1 200 OK\r\n\r\n{}", rendered)
+                }
+                Err(e) => {
+                    let res = "500 Internal Server Error";
+                    println!("├ {}", res);
+                    println!("└ {}", e);
+                    format!(
+                        "HTTP/1.1 {}\r\n\r\n{}",
+                        res,
+                        render(&req, &format!("3{}", res))?
+                    )
+                }
+            },
             Err(e) => {
-                let res = "500 Internal Server Error";
-                println!("├ {}", res);
+                let res = "404 Not Found";
+                println!("├ {}: {}", res, req.path);
                 println!("└ {}", e);
                 format!(
                     "HTTP/1.1 {}\r\n\r\n{}",
@@ -98,18 +111,14 @@ where
                 )
             }
         },
-        Err(e) => {
-            let res = "404 Not Found";
-            println!("├ {}: {}", res, req.path);
-            println!("└ {}", e);
+        _ => {
+            println!("└ {}", &format!("Can't serve type {:?}", url.typ));
             format!(
-                "HTTP/1.1 {}\r\n\r\n{}",
-                res,
-                render(&req, &format!("3{}", res))?
+                "HTTP/1.1 200 OK\r\n\r\n{}",
+                render(&req, &format!("3Can't serve files of type {:?}", url.typ))?
             )
         }
     };
-
     w.write(response.as_bytes()).unwrap();
     w.flush().unwrap();
     Ok(())
