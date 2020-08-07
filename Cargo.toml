@@ -24,7 +24,7 @@ dev-version-ext = "dev"
 
 [dependencies]
 threadpool = "1.7.1"
-phetch = { version = "1.0.2", default-features = false, features = ['tls'] }
+phetch = { version = "1.0.3", default-features = false, features = ['tls'] }
 htmlescape = "0.3.1"
 rust-embed="5.2.0"
 linkify = "0.4.0"
