@@ -197,7 +197,7 @@ fn to_menu_html(url: &str, gopher: &str) -> String {
         } else if line.typ == gopher::Type::Search {
             out.push_str(&to_search_html(&line));
         } else {
-            out.push_str(&htmlescape::encode_minimal(&line.text()));
+            out.push_str(&link_urls(&htmlescape::encode_minimal(&line.text())));
         }
         if !line.typ.is_info() && line.typ != gopher::Type::Search {
             out.push_str("</a>");
