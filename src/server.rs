@@ -84,38 +84,23 @@ where
     let url = gopher::parse_url(&req.path);
     let response = match url.typ {
         Type::Info | Type::Menu | Type::Text => match fetch(&req.path) {
-            Ok(content) => match render(&req, &content) {
-                Ok(rendered) => {
-                    println!("└ {}", "200 OK");
-                    format!("HTTP/1.1 200 OK\r\n\r\n{}", rendered)
-                }
-                Err(e) => {
-                    let res = "500 Internal Server Error";
-                    println!("├ {}", res);
-                    println!("└ {}", e);
-                    format!(
-                        "HTTP/1.1 {}\r\n\r\n{}",
-                        res,
-                        render(&req, &format!("3{}", res))?
-                    )
-                }
-            },
+            Ok(content) => {
+                println!("└ {}", "200 OK");
+                render(&req, "200 OK", &content)
+            }
             Err(e) => {
                 let res = "404 Not Found";
                 println!("├ {}: {}", res, req.path);
                 println!("└ {}", e);
-                format!(
-                    "HTTP/1.1 {}\r\n\r\n{}",
-                    res,
-                    render(&req, &format!("3{}", res))?
-                )
+                render(&req, res, &format!("3{}", res))
             }
         },
         _ => {
             println!("└ {}", &format!("Can't serve type {:?}", url.typ));
-            format!(
-                "HTTP/1.1 200 OK\r\n\r\n{}",
-                render(&req, &format!("3Can't serve files of type {:?}", url.typ))?
+            render(
+                &req,
+                "200 OK",
+                &format!("3Can't serve files of type {:?}", url.typ),
             )
         }
     };
@@ -124,12 +109,22 @@ where
     Ok(())
 }
 
-fn render(req: &Request, content: &str) -> Result<String> {
-    let layout = asset("layout.html")?;
-    Ok(layout
+fn render(req: &Request, status: &str, content: &str) -> String {
+    let layout = asset("layout.html").unwrap_or_else(|_| "layout.html not found".into());
+    let content = layout
         .replace("{{content}}", &to_html(req.target_url(), content))
         .replace("{{url}}", req.short_target_url())
-        .replace("{{title}}", "phroxy"))
+        .replace("{{title}}", "phroxy");
+    format!(
+        "HTTP/1.1 {}\r\n{}\r\n\r\n{}",
+        status,
+        format!(
+            "Content-Type: {}\r\nContent-Length: {}\r\n",
+            "text/html; charset=utf-8",
+            content.len()
+        ),
+        content
+    )
 }
 
 /// Fetch the Gopher response for a given URL or search term.
