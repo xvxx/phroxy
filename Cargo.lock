@@ -202,7 +202,7 @@ dependencies = [
 
 [[package]]
 name = "phroxy"
-version = "0.1.7-dev"
+version = "0.1.7"
 dependencies = [
  "autolink 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "htmlescape 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
