@@ -1,3 +1,7 @@
+:warning: phroxy is no longer in development and has been archived. thanks for all the fun. :warning:
+
+---
+
 <!--
       /            \    /
  ___ (___  ___  ___ \  /
